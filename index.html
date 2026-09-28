@@ -8,12 +8,23 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='48' fill='%23150f0c'/%3E%3Ctext x='50' y='66' font-size='55' text-anchor='middle' fill='%23d98f2e' font-family='Georgia,serif'%3EH%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,800;1,9..144,500&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
+<script>document.documentElement.classList.add('preloading');</script>
 </head>
 <body>
 
 <div class="grain"></div>
+<div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
+
+<!-- PRELOADER -->
+<div class="preloader" id="preloader" aria-hidden="true">
+  <svg viewBox="0 0 120 120" width="88" height="88" class="preloader-mark">
+    <circle cx="60" cy="60" r="52" fill="none" stroke="#3a2c22" stroke-width="2"/>
+    <circle class="preloader-ring" cx="60" cy="60" r="52" fill="none" stroke="#d98f2e" stroke-width="2" stroke-linecap="round"/>
+    <text x="60" y="78" text-anchor="middle" font-family="Fraunces, serif" font-size="52" fill="#f4ead8">H</text>
+  </svg>
+</div>
 
 <header class="site-header" id="top">
   <div class="wrap header-inner">
@@ -40,7 +51,7 @@
         <button type="button" class="lang-btn active" data-lang="hu">HU</button>
         <button type="button" class="lang-btn" data-lang="en">EN</button>
       </div>
-      <a class="btn btn-small btn-outline" href="https://www.facebook.com/people/Henrys-Sopron/61588536080640/" target="_blank" rel="noopener" data-hu="Asztalfoglalás" data-en="Reserve a table">Asztalfoglalás</a>
+      <a class="btn btn-small btn-outline btn-magnetic" href="https://www.facebook.com/people/Henrys-Sopron/61588536080640/" target="_blank" rel="noopener" data-hu="Asztalfoglalás" data-en="Reserve a table">Asztalfoglalás</a>
       <button class="nav-toggle" id="navToggle" aria-label="Menü" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>
@@ -50,68 +61,137 @@
 
 <main>
 
-  <!-- HERO -->
-  <section class="hero">
-    <div class="hero-bg" aria-hidden="true">
+  <!-- HERO INTRO -->
+  <section class="hero" id="heroIntro">
+    <div class="hero-bg" id="heroBg" aria-hidden="true">
       <svg class="hops-pattern" width="100%" height="100%" preserveAspectRatio="xMidYMid slice">
-        <use href="#hop-leaf" x="4%" y="10%" />
-        <use href="#hop-leaf" x="86%" y="18%" />
-        <use href="#hop-leaf" x="14%" y="72%" />
-        <use href="#hop-leaf" x="92%" y="66%" />
-        <use href="#hop-leaf" x="50%" y="4%" />
-        <use href="#hop-leaf" x="60%" y="84%" />
+        <use href="#hop-leaf" class="hop hop-1" x="4%" y="10%" />
+        <use href="#hop-leaf" class="hop hop-2" x="86%" y="18%" />
+        <use href="#hop-leaf" class="hop hop-3" x="14%" y="72%" />
+        <use href="#hop-leaf" class="hop hop-4" x="92%" y="66%" />
+        <use href="#hop-leaf" class="hop hop-5" x="50%" y="4%" />
+        <use href="#hop-leaf" class="hop hop-6" x="60%" y="84%" />
       </svg>
+      <div class="hero-spotlight" id="heroSpotlight"></div>
     </div>
 
     <div class="wrap hero-inner">
       <div class="hero-copy">
-        <p class="eyebrow" data-hu="Várkerület 83, Sopron" data-en="Várkerület 83, Sopron">Várkerület 83, Sopron</p>
-        <h1>
-          <span data-hu="Kézműves burgerek." data-en="Craft burgers.">Kézműves burgerek.</span><br>
-          <span class="accent" data-hu="Csapolt kézműves sörök." data-en="Craft beers on tap.">Csapolt kézműves sörök.</span>
+        <p class="eyebrow reveal-line" data-hu="Várkerület 83, Sopron" data-en="Várkerület 83, Sopron">Várkerület 83, Sopron</p>
+        <h1 class="hero-title">
+          <span class="reveal-word-wrap"><span class="reveal-word" data-hu="Kézműves burgerek." data-en="Craft burgers.">Kézműves burgerek.</span></span><br>
+          <span class="reveal-word-wrap"><span class="reveal-word accent" data-hu="Csapolt kézműves sörök." data-en="Craft beers on tap.">Csapolt kézműves sörök.</span></span>
         </h1>
-        <p class="hero-lead" data-hu="Nem egy újabb franchise üres tereivel — megőriztük a régi soproni sörözőhangulatot, és mellé hoztunk egy vadonatúj, saját receptes menüt. Savanyú tésztás buci, kézzel formázott húspogácsa, és annyi kézműves sör, hogy nehéz lesz választani." data-en="Not another franchise with an empty, identical interior — we kept the old Sopron pub atmosphere and paired it with a brand-new, made-from-scratch menu. Sourdough buns, hand-shaped patties, and enough craft beer taps to make choosing genuinely difficult.">
+        <p class="hero-lead reveal-line" data-hu="Nem egy újabb franchise üres tereivel — megőriztük a régi soproni sörözőhangulatot, és mellé hoztunk egy vadonatúj, saját receptes menüt. Savanyú tésztás buci, kézzel formázott húspogácsa, és annyi kézműves sör, hogy nehéz lesz választani." data-en="Not another franchise with an empty, identical interior — we kept the old Sopron pub atmosphere and paired it with a brand-new, made-from-scratch menu. Sourdough buns, hand-shaped patties, and enough craft beer taps to make choosing genuinely difficult.">
           Nem egy újabb franchise üres tereivel — megőriztük a régi soproni sörözőhangulatot, és mellé hoztunk egy vadonatúj, saját receptes menüt. Savanyú tésztás buci, kézzel formázott húspogácsa, és annyi kézműves sör, hogy nehéz lesz választani.
         </p>
-        <div class="hero-actions">
-          <a href="#menu" class="btn btn-primary" data-hu="Étlap megtekintése" data-en="View the menu">Étlap megtekintése</a>
-          <a href="https://wolt.com/en/hun/sopron/restaurant/henrys-sopron" target="_blank" rel="noopener" class="btn btn-ghost" data-hu="Házhozszállítás rendelése" data-en="Order delivery">Házhozszállítás rendelése</a>
+        <div class="hero-actions reveal-line">
+          <a href="#menu" class="btn btn-primary btn-magnetic" data-hu="Étlap megtekintése" data-en="View the menu">Étlap megtekintése</a>
+          <a href="https://wolt.com/en/hun/sopron/restaurant/henrys-sopron" target="_blank" rel="noopener" class="btn btn-ghost btn-magnetic" data-hu="Házhozszállítás rendelése" data-en="Order delivery">Házhozszállítás rendelése</a>
         </div>
-        <div class="hero-meta">
+        <div class="hero-meta reveal-line">
           <div class="hero-meta-item">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
             <span data-hu="Ma nyitva: 11:30–22:30" data-en="Open today: 11:30–22:30">Ma nyitva: 11:30–22:30</span>
           </div>
           <div class="hero-meta-item">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 21c0-4-3.6-6-8-6s-8 2-8 6"/><circle cx="12" cy="7" r="4"/></svg>
-            <span data-hu="26-féle csapolt kézműves sör" data-en="26 craft beers on tap">26-féle csapolt kézműves sör</span>
+            <span><span class="count-up" data-target="26">0</span><span data-hu="-féle csapolt kézműves sör" data-en=" craft beers on tap"> -féle csapolt kézműves sör</span></span>
           </div>
         </div>
       </div>
+    </div>
 
-      <div class="hero-art" aria-hidden="true">
-        <svg viewBox="0 0 420 420" class="burger-illustration">
-          <ellipse cx="210" cy="365" rx="150" ry="20" fill="#000" opacity="0.35"/>
-          <!-- bottom bun -->
-          <path d="M70 300 Q70 340 210 340 Q350 340 350 300 L350 275 L70 275 Z" fill="#c9822f"/>
-          <!-- patty -->
-          <rect x="60" y="250" width="300" height="34" rx="14" fill="#5b2f22"/>
-          <!-- cheese -->
-          <path d="M55 250 L365 250 L340 225 L300 250 L260 222 L220 250 L180 222 L140 250 L100 224 Z" fill="#e0a52f"/>
-          <!-- lettuce -->
-          <path d="M60 222 Q90 200 120 222 Q150 198 180 222 Q210 196 240 222 Q270 198 300 222 Q330 200 360 222 L360 236 L60 236 Z" fill="#7c9a4a"/>
-          <!-- tomato -->
-          <rect x="75" y="205" width="270" height="20" rx="10" fill="#b3432b"/>
-          <!-- top bun -->
-          <path d="M75 205 Q60 120 210 105 Q360 120 345 205 Z" fill="#d98f2e"/>
-          <path d="M95 205 Q85 135 210 122 Q335 135 325 205 Z" fill="none" stroke="#a8641a" stroke-width="3" opacity="0.5"/>
-          <!-- sesame -->
-          <ellipse cx="150" cy="150" rx="6" ry="9" fill="#f4ead8" transform="rotate(-20 150 150)"/>
-          <ellipse cx="200" cy="130" rx="6" ry="9" fill="#f4ead8" transform="rotate(10 200 130)"/>
-          <ellipse cx="250" cy="145" rx="6" ry="9" fill="#f4ead8" transform="rotate(-8 250 145)"/>
-          <ellipse cx="180" cy="165" rx="6" ry="9" fill="#f4ead8" transform="rotate(25 180 165)"/>
-          <ellipse cx="235" cy="172" rx="6" ry="9" fill="#f4ead8" transform="rotate(-15 235 172)"/>
-        </svg>
+    <button class="scroll-cue" id="scrollCue" aria-label="Görgess lejjebb">
+      <span data-hu="Görgess" data-en="Scroll">Görgess</span>
+      <svg width="16" height="24" viewBox="0 0 16 24"><rect x="1" y="1" width="14" height="22" rx="7" fill="none" stroke="currentColor" stroke-width="1.4"/><circle class="scroll-cue-dot" cx="8" cy="7" r="2.2" fill="currentColor"/></svg>
+    </button>
+  </section>
+
+  <!-- BURGER BUILD — pinned scroll spectacle -->
+  <section class="burger-build" id="burgerBuild">
+    <div class="burger-build-stage">
+      <div class="stage-glow" aria-hidden="true"></div>
+
+      <svg class="burger-build-svg" viewBox="0 0 420 460" aria-hidden="true">
+        <defs>
+          <linearGradient id="gradTopBun" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#eaa53f"/>
+            <stop offset="55%" stop-color="#d98f2e"/>
+            <stop offset="100%" stop-color="#a8641a"/>
+          </linearGradient>
+          <linearGradient id="gradBottomBun" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#c9822f"/>
+            <stop offset="100%" stop-color="#96601c"/>
+          </linearGradient>
+          <linearGradient id="gradPatty" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#6b3826"/>
+            <stop offset="100%" stop-color="#40200f"/>
+          </linearGradient>
+          <linearGradient id="gradCheese" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#f0b93d"/>
+            <stop offset="100%" stop-color="#d99a20"/>
+          </linearGradient>
+          <linearGradient id="gradLettuce" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#93b360"/>
+            <stop offset="100%" stop-color="#63813a"/>
+          </linearGradient>
+          <linearGradient id="gradTomato" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#c95a3d"/>
+            <stop offset="100%" stop-color="#932f1c"/>
+          </linearGradient>
+          <radialGradient id="gradPlate" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#2a2019"/>
+            <stop offset="100%" stop-color="#150f0c" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+
+        <ellipse cx="210" cy="400" rx="190" ry="26" fill="url(#gradPlate)"/>
+
+        <g id="ing-bottom-bun">
+          <path d="M60 330 Q60 372 210 372 Q360 372 360 330 L360 300 L60 300 Z" fill="url(#gradBottomBun)"/>
+          <path d="M60 300 L360 300 L360 308 L60 308 Z" fill="#000" opacity="0.12"/>
+        </g>
+
+        <g id="ing-patty">
+          <rect x="52" y="270" width="316" height="38" rx="15" fill="url(#gradPatty)"/>
+          <rect x="52" y="270" width="316" height="10" rx="5" fill="#7c4530" opacity="0.6"/>
+        </g>
+
+        <g id="ing-cheese">
+          <path d="M48 268 L372 268 L344 240 L302 268 L258 238 L216 268 L174 238 L132 268 L90 240 Z" fill="url(#gradCheese)"/>
+        </g>
+
+        <g id="ing-lettuce">
+          <path d="M55 236 Q90 210 125 236 Q158 208 192 236 Q225 206 258 236 Q291 208 324 236 Q357 210 365 236 L365 252 L55 252 Z" fill="url(#gradLettuce)"/>
+        </g>
+
+        <g id="ing-tomato">
+          <rect x="70" y="218" width="280" height="22" rx="11" fill="url(#gradTomato)"/>
+          <circle cx="120" cy="229" r="4.5" fill="#e8dccb" opacity="0.5"/>
+          <circle cx="230" cy="229" r="4.5" fill="#e8dccb" opacity="0.5"/>
+          <circle cx="300" cy="229" r="4.5" fill="#e8dccb" opacity="0.5"/>
+        </g>
+
+        <g id="ing-top-bun">
+          <path d="M78 218 Q60 118 210 100 Q360 118 342 218 Z" fill="url(#gradTopBun)"/>
+          <path d="M100 218 Q88 142 210 128 Q332 142 320 218 Z" fill="none" stroke="#a8641a" stroke-width="3" opacity="0.45"/>
+          <g id="ing-sesame">
+            <ellipse cx="150" cy="152" rx="6.5" ry="9.5" fill="#f4ead8" transform="rotate(-20 150 152)"/>
+            <ellipse cx="205" cy="128" rx="6.5" ry="9.5" fill="#f4ead8" transform="rotate(10 205 128)"/>
+            <ellipse cx="258" cy="148" rx="6.5" ry="9.5" fill="#f4ead8" transform="rotate(-8 258 148)"/>
+            <ellipse cx="178" cy="170" rx="6.5" ry="9.5" fill="#f4ead8" transform="rotate(25 178 170)"/>
+            <ellipse cx="240" cy="178" rx="6.5" ry="9.5" fill="#f4ead8" transform="rotate(-15 240 178)"/>
+            <ellipse cx="120" cy="185" rx="6.5" ry="9.5" fill="#f4ead8" transform="rotate(12 120 185)"/>
+          </g>
+        </g>
+      </svg>
+
+      <div class="build-captions">
+        <p class="build-caption active" data-hu="Friss hozzávalók, minden nap." data-en="Fresh ingredients, every single day.">Friss hozzávalók, minden nap.</p>
+        <p class="build-caption" data-hu="Kézzel formázott húspogácsa." data-en="Hand-shaped patties, made to order.">Kézzel formázott húspogácsa.</p>
+        <p class="build-caption" data-hu="Savanyú kovászos buci." data-en="Sourdough buns, baked fresh.">Savanyú kovászos buci.</p>
+        <p class="build-caption build-caption-final" data-hu="Ez a Henry's." data-en="This is Henry's.">Ez a Henry's.</p>
       </div>
     </div>
   </section>
@@ -119,26 +199,26 @@
   <!-- STORY -->
   <section class="section" id="story">
     <div class="wrap story-grid">
-      <div class="story-figure" aria-hidden="true">
+      <div class="story-figure reveal" data-reveal="left" aria-hidden="true">
         <svg viewBox="0 0 200 200" width="100%">
           <circle cx="100" cy="100" r="96" fill="none" stroke="#3a2c22" stroke-width="2"/>
-          <circle cx="100" cy="100" r="70" fill="none" stroke="#a8641a" stroke-width="1.5" stroke-dasharray="4 6"/>
+          <circle class="story-ring" cx="100" cy="100" r="70" fill="none" stroke="#a8641a" stroke-width="1.5" stroke-dasharray="4 6"/>
           <text x="100" y="112" text-anchor="middle" font-family="Fraunces, serif" font-size="56" fill="#d98f2e">H</text>
         </svg>
       </div>
       <div class="story-copy">
-        <p class="eyebrow" data-hu="A mi sztorink" data-en="Our story">A mi sztorink</p>
-        <h2 data-hu="Régi falak, vadonatúj recept" data-en="Old walls, brand-new recipes">Régi falak, vadonatúj recept</h2>
-        <p data-hu="A Várkerület 83. szám alatt korábban a Puskás söröző fogadta a vendégeket — ezt a hangulatot szándékosan nem bontottuk le. „Nem vagyunk egy franchise, aminek minden üres tere ugyanúgy néz ki. Megtartottuk azt a design-t és miliőt, ami korábban is vonzotta az embereket, csak új étlappal” — ezzel a szemlélettel nyitottunk 2026 márciusában." data-en="Várkerület 83 used to be home to the Puskás söröző — and we deliberately kept that atmosphere alive. &quot;We're not a franchise with empty spaces that all look identical. We kept the design and the mood that drew people in before, just with a brand-new menu&quot; — that's the philosophy we opened with in March 2026.">
+        <p class="eyebrow reveal" data-hu="A mi sztorink" data-en="Our story">A mi sztorink</p>
+        <h2 class="reveal" data-hu="Régi falak, vadonatúj recept" data-en="Old walls, brand-new recipes">Régi falak, vadonatúj recept</h2>
+        <p class="reveal" data-hu="A Várkerület 83. szám alatt korábban a Puskás söröző fogadta a vendégeket — ezt a hangulatot szándékosan nem bontottuk le. „Nem vagyunk egy franchise, aminek minden üres tere ugyanúgy néz ki. Megtartottuk azt a design-t és miliőt, ami korábban is vonzotta az embereket, csak új étlappal” — ezzel a szemlélettel nyitottunk 2026 márciusában." data-en="Várkerület 83 used to be home to the Puskás söröző — and we deliberately kept that atmosphere alive. &quot;We're not a franchise with empty spaces that all look identical. We kept the design and the mood that drew people in before, just with a brand-new menu&quot; — that's the philosophy we opened with in March 2026.">
           A Várkerület 83. szám alatt korábban a Puskás söröző fogadta a vendégeket — ezt a hangulatot szándékosan nem bontottuk le. „Nem vagyunk egy franchise, aminek minden üres tere ugyanúgy néz ki. Megtartottuk azt a design-t és miliőt, ami korábban is vonzotta az embereket, csak új étlappal” — ezzel a szemlélettel nyitottunk 2026 márciusában.
         </p>
-        <p data-hu="A soproni Henry's-t az Imris család — Imris László és Imris Máté, apa-fia páros — viszi, mögöttük komoly vendéglátós tapasztalattal. A nyitóhétvégén 900 burger fogyott, és azóta is rendszeresen tele van a ház." data-en="Henry's Sopron is run by the Imris family — László and Máté Imris, a father-son duo with serious hospitality experience behind them. 900 burgers were sold on opening weekend alone, and the place has been consistently full ever since.">
+        <p class="reveal" data-hu="A soproni Henry's-t az Imris család — Imris László és Imris Máté, apa-fia páros — viszi, mögöttük komoly vendéglátós tapasztalattal. A nyitóhétvégén 900 burger fogyott, és azóta is rendszeresen tele van a ház." data-en="Henry's Sopron is run by the Imris family — László and Máté Imris, a father-son duo with serious hospitality experience behind them. 900 burgers were sold on opening weekend alone, and the place has been consistently full ever since.">
           A soproni Henry's-t az Imris család — Imris László és Imris Máté, apa-fia páros — viszi, mögöttük komoly vendéglátós tapasztalattal. A nyitóhétvégén 900 burger fogyott, és azóta is rendszeresen tele van a ház.
         </p>
-        <ul class="story-facts">
-          <li><strong data-hu="Kovászos buci" data-en="Sourdough buns">Kovászos buci</strong><span data-hu="szombathelyi kézműves pékségtől" data-en="from a craft bakery in Szombathely">szombathelyi kézműves pékségtől</span></li>
-          <li><strong data-hu="Kézzel formázott" data-en="Hand-shaped">Kézzel formázott</strong><span data-hu="marha-, pulled pork és vegán opciók" data-en="beef, pulled pork &amp; vegan options">marha-, pulled pork és vegán opciók</span></li>
-          <li><strong data-hu="Saját öntetek" data-en="House-made sauces">Saját öntetek</strong><span data-hu="és minden nap friss túrófánk" data-en="and fresh túrófánk (curd donuts) daily">és minden nap friss túrófánk</span></li>
+        <ul class="story-facts reveal-stagger">
+          <li class="reveal-item"><strong data-hu="Kovászos buci" data-en="Sourdough buns">Kovászos buci</strong><span data-hu="szombathelyi kézműves pékségtől" data-en="from a craft bakery in Szombathely">szombathelyi kézműves pékségtől</span></li>
+          <li class="reveal-item"><strong data-hu="Kézzel formázott" data-en="Hand-shaped">Kézzel formázott</strong><span data-hu="marha-, pulled pork és vegán opciók" data-en="beef, pulled pork &amp; vegan options">marha-, pulled pork és vegán opciók</span></li>
+          <li class="reveal-item"><strong data-hu="Saját öntetek" data-en="House-made sauces">Saját öntetek</strong><span data-hu="és minden nap friss túrófánk" data-en="and fresh túrófánk (curd donuts) daily">és minden nap friss túrófánk</span></li>
         </ul>
       </div>
     </div>
@@ -148,14 +228,15 @@
   <section class="section section-alt" id="menu">
     <div class="wrap">
       <div class="section-head">
-        <p class="eyebrow" data-hu="Étlap" data-en="Menu">Étlap</p>
-        <h2 data-hu="Amiért érdemes benézni" data-en="What's worth the trip">Amiért érdemes benézni</h2>
-        <p class="section-lead" data-hu="Válogatás a kínálatból — a teljes, mindig friss étlapért nézd meg Facebook / Instagram oldalunkat, vagy rendelj a Woltról / Foodoráról." data-en="A selection from our offering — for the full, always up-to-date menu, check our Facebook / Instagram, or order via Wolt / Foodora.">
+        <p class="eyebrow reveal" data-hu="Étlap" data-en="Menu">Étlap</p>
+        <h2 class="reveal" data-hu="Amiért érdemes benézni" data-en="What's worth the trip">Amiért érdemes benézni</h2>
+        <p class="section-lead reveal" data-hu="Válogatás a kínálatból — a teljes, mindig friss étlapért nézd meg Facebook / Instagram oldalunkat, vagy rendelj a Woltról / Foodoráról." data-en="A selection from our offering — for the full, always up-to-date menu, check our Facebook / Instagram, or order via Wolt / Foodora.">
           Válogatás a kínálatból — a teljes, mindig friss étlapért nézd meg Facebook / Instagram oldalunkat, vagy rendelj a Woltról / Foodoráról.
         </p>
       </div>
 
-      <div class="menu-tabs" role="tablist">
+      <div class="menu-tabs reveal" role="tablist">
+        <span class="menu-tab-pill" id="menuTabPill" aria-hidden="true"></span>
         <button class="menu-tab active" data-target="burgers" data-hu="Burgerek" data-en="Burgers">Burgerek</button>
         <button class="menu-tab" data-target="fried" data-hu="Ropogósok" data-en="Fried &amp; boxes">Ropogósok</button>
         <button class="menu-tab" data-target="sides" data-hu="Köretek" data-en="Sides">Köretek</button>
@@ -163,69 +244,69 @@
       </div>
 
       <div class="menu-panel active" id="panel-burgers">
-        <div class="menu-item">
+        <div class="menu-item reveal-item">
           <div class="menu-item-head"><span class="menu-item-name">Cheeseburger</span><span class="menu-item-price">3 890 Ft</span></div>
           <p class="menu-item-desc" data-hu="Marhahúspogácsa, cheddar, house szósz, savanyú kovászos bucin." data-en="Beef patty, cheddar, house sauce, on a sourdough bun.">Marhahúspogácsa, cheddar, house szósz, savanyú kovászos bucin.</p>
         </div>
-        <div class="menu-item">
+        <div class="menu-item reveal-item">
           <div class="menu-item-head"><span class="menu-item-name">Cheese Lover Burger</span><span class="menu-item-price">4 290 Ft</span></div>
           <p class="menu-item-desc" data-hu="Dupla adag sajt, extra krémes, a sajtimádóknak." data-en="Double cheese, extra creamy — for true cheese lovers.">Dupla adag sajt, extra krémes, a sajtimádóknak.</p>
         </div>
-        <div class="menu-item">
+        <div class="menu-item reveal-item">
           <div class="menu-item-head"><span class="menu-item-name">Dupla Bacon Burger</span><span class="menu-item-price">4 190 Ft</span></div>
           <p class="menu-item-desc" data-hu="Ropogós bacon, dupla adagban, füstös ízekkel." data-en="Crispy bacon, doubled up, smoky all the way.">Ropogós bacon, dupla adagban, füstös ízekkel.</p>
         </div>
-        <div class="menu-item">
+        <div class="menu-item reveal-item">
           <div class="menu-item-head"><span class="menu-item-name">Brutal Double Burger</span><span class="menu-item-price">5 390 Ft</span></div>
           <p class="menu-item-desc" data-hu="Két húspogácsa, két sajt — a komolyan éhes vendégeknek." data-en="Two patties, two cheeses — for the seriously hungry.">Két húspogácsa, két sajt — a komolyan éhes vendégeknek.</p>
         </div>
-        <div class="menu-item">
+        <div class="menu-item reveal-item">
           <div class="menu-item-head"><span class="menu-item-name">Pulled Pork Burger</span><span class="menu-item-price">4 990 Ft</span></div>
           <p class="menu-item-desc" data-hu="Órákon át húzott sertés, BBQ szósz, roppanós savanyúság." data-en="Slow-pulled pork, BBQ sauce, crunchy pickles.">Órákon át húzott sertés, BBQ szósz, roppanós savanyúság.</p>
         </div>
-        <div class="menu-item">
+        <div class="menu-item reveal-item">
           <div class="menu-item-head"><span class="menu-item-name">Henry's Royal Burger</span><span class="menu-item-price">6 990 Ft</span></div>
           <p class="menu-item-desc" data-hu="A ház zászlóshajója — a teljes Henry's élmény egy tányéron." data-en="Our flagship build — the full Henry's experience on one plate.">A ház zászlóshajója — a teljes Henry's élmény egy tányéron.</p>
         </div>
       </div>
 
       <div class="menu-panel" id="panel-fried">
-        <div class="menu-item">
+        <div class="menu-item reveal-item">
           <div class="menu-item-head"><span class="menu-item-name" data-hu="Cordon Bleu" data-en="Cordon Bleu">Cordon Bleu</span><span class="menu-item-price">4 790 Ft</span></div>
           <p class="menu-item-desc" data-hu="Cheddarral és baconnel töltött, ropogósra sütve." data-en="Stuffed with cheddar and bacon, fried until crisp.">Cheddarral és baconnel töltött, ropogósra sütve.</p>
         </div>
-        <div class="menu-item">
+        <div class="menu-item reveal-item">
           <div class="menu-item-head"><span class="menu-item-name" data-hu="Rántott csirke" data-en="Fried chicken">Rántott csirke</span><span class="menu-item-price">4 590 Ft</span></div>
           <p class="menu-item-desc" data-hu="Extra ropogós panír, klasszikus köretekkel." data-en="Extra crispy breading, served with classic sides.">Extra ropogós panír, klasszikus köretekkel.</p>
         </div>
-        <div class="menu-item">
+        <div class="menu-item reveal-item">
           <div class="menu-item-head"><span class="menu-item-name" data-hu="Pulled Pork Box" data-en="Pulled Pork Box">Pulled Pork Box</span><span class="menu-item-price">5 190 Ft</span></div>
           <p class="menu-item-desc" data-hu="Húzott sertés bőségesen, köret és öntet választással." data-en="A generous pulled pork box with a choice of side and sauce.">Húzott sertés bőségesen, köret és öntet választással.</p>
         </div>
       </div>
 
       <div class="menu-panel" id="panel-sides">
-        <div class="menu-item">
+        <div class="menu-item reveal-item">
           <div class="menu-item-head"><span class="menu-item-name" data-hu="Csónakburgonya" data-en="Boat fries">Csónakburgonya</span><span class="menu-item-price">1 490 Ft</span></div>
         </div>
-        <div class="menu-item">
+        <div class="menu-item reveal-item">
           <div class="menu-item-head"><span class="menu-item-name" data-hu="Édesburgonya hasábok" data-en="Sweet potato fries">Édesburgonya hasábok</span><span class="menu-item-price">2 090 Ft</span></div>
         </div>
-        <div class="menu-item">
+        <div class="menu-item reveal-item">
           <div class="menu-item-head"><span class="menu-item-name" data-hu="Hagymakarika" data-en="Onion rings">Hagymakarika</span><span class="menu-item-price">1 790 Ft</span></div>
         </div>
       </div>
 
       <div class="menu-panel" id="panel-desserts">
-        <div class="menu-item">
+        <div class="menu-item reveal-item">
           <div class="menu-item-head"><span class="menu-item-name" data-hu="Kézműves churros, Nutellával" data-en="Artisan churros with Nutella">Kézműves churros, Nutellával</span><span class="menu-item-price">2 290 Ft</span></div>
         </div>
-        <div class="menu-item">
+        <div class="menu-item reveal-item">
           <div class="menu-item-head"><span class="menu-item-name" data-hu="Házi túrófánk" data-en="Homemade túrófánk (curd donuts)">Házi túrófánk</span><span class="menu-item-price">2 290 Ft</span></div>
         </div>
       </div>
 
-      <p class="menu-note" data-hu="Az árak tájékoztató jellegűek, a mindenkori étlap eltérhet. SZÉP-kártyát elfogadunk." data-en="Prices are indicative and the current menu may differ. We accept SZÉP card payments.">Az árak tájékoztató jellegűek, a mindenkori étlap eltérhet. SZÉP-kártyát elfogadunk.</p>
+      <p class="menu-note reveal" data-hu="Az árak tájékoztató jellegűek, a mindenkori étlap eltérhet. SZÉP-kártyát elfogadunk." data-en="Prices are indicative and the current menu may differ. We accept SZÉP card payments.">Az árak tájékoztató jellegűek, a mindenkori étlap eltérhet. SZÉP-kártyát elfogadunk.</p>
     </div>
   </section>
 
@@ -233,21 +314,28 @@
   <section class="section" id="beers">
     <div class="wrap beers-grid">
       <div class="beers-copy">
-        <p class="eyebrow" data-hu="Csapolt sörök" data-en="On tap">Csapolt sörök</p>
-        <h2 data-hu="Kézműves sör, komolyan véve" data-en="Craft beer, taken seriously">Kézműves sör, komolyan véve</h2>
-        <p data-hu="Csapjainkon hazai kézműves sörfőzdék válogatott, gyakran cserélődő kínálata várja a sörkedvelőket — mellette helyi soproni borokkal is készülünk. Ha bizonytalan vagy, kérdezd a csapost, szívesen ajánlanak stílust ízlés szerint." data-en="Our taps rotate through a curated, ever-changing selection from Hungarian craft breweries — alongside a lineup of local Sopron wines. If you're unsure what to pick, just ask — the team loves recommending a style to match your taste.">
+        <p class="eyebrow reveal" data-hu="Csapolt sörök" data-en="On tap">Csapolt sörök</p>
+        <h2 class="reveal" data-hu="Kézműves sör, komolyan véve" data-en="Craft beer, taken seriously">Kézműves sör, komolyan véve</h2>
+        <p class="reveal" data-hu="Csapjainkon hazai kézműves sörfőzdék válogatott, gyakran cserélődő kínálata várja a sörkedvelőket — mellette helyi soproni borokkal is készülünk. Ha bizonytalan vagy, kérdezd a csapost, szívesen ajánlanak stílust ízlés szerint." data-en="Our taps rotate through a curated, ever-changing selection from Hungarian craft breweries — alongside a lineup of local Sopron wines. If you're unsure what to pick, just ask — the team loves recommending a style to match your taste.">
           Csapjainkon hazai kézműves sörfőzdék válogatott, gyakran cserélődő kínálata várja a sörkedvelőket — mellette helyi soproni borokkal is készülünk. Ha bizonytalan vagy, kérdezd a csapost, szívesen ajánlanak stílust ízlés szerint.
         </p>
-        <div class="beer-stats">
-          <div class="beer-stat"><span class="beer-stat-num">26</span><span data-hu="féle csapolt sör" data-en="beers on tap">féle csapolt sör</span></div>
+        <div class="beer-stats reveal">
+          <div class="beer-stat"><span class="beer-stat-num count-up" data-target="26">0</span><span data-hu="féle csapolt sör" data-en="beers on tap">féle csapolt sör</span></div>
           <div class="beer-stat"><span class="beer-stat-num">1590–5490</span><span data-hu="Ft áras kínálat" data-en="Ft price range">Ft áras kínálat</span></div>
         </div>
       </div>
-      <div class="beers-art" aria-hidden="true">
+      <div class="beers-art reveal" data-reveal="right" aria-hidden="true">
         <svg viewBox="0 0 220 260" width="100%">
+          <defs>
+            <clipPath id="mugClip">
+              <rect x="52" y="66" width="86" height="138" rx="4"/>
+            </clipPath>
+          </defs>
           <rect x="40" y="50" width="110" height="170" rx="10" fill="#221a15" stroke="#a8641a" stroke-width="2"/>
-          <rect x="52" y="66" width="86" height="138" rx="4" fill="#d98f2e"/>
-          <rect x="52" y="66" width="86" height="26" rx="4" fill="#f4ead8" opacity="0.85"/>
+          <g clip-path="url(#mugClip)">
+            <rect id="mugLiquid" x="52" y="204" width="86" height="0" fill="#d98f2e"/>
+            <rect id="mugFoam" x="52" y="196" width="86" height="14" fill="#f4ead8" opacity="0.9"/>
+          </g>
           <path d="M150 90 h28 a18 18 0 0 1 18 18 v34 a18 18 0 0 1 -18 18 h-28" fill="none" stroke="#a8641a" stroke-width="8" stroke-linecap="round"/>
         </svg>
       </div>
@@ -258,12 +346,12 @@
   <section class="section section-alt" id="location">
     <div class="wrap">
       <div class="section-head">
-        <p class="eyebrow" data-hu="Helyszín &amp; nyitvatartás" data-en="Location &amp; hours">Helyszín &amp; nyitvatartás</p>
-        <h2 data-hu="Találj ránk a Várkerületen" data-en="Find us on Várkerület">Találj ránk a Várkerületen</h2>
+        <p class="eyebrow reveal" data-hu="Helyszín &amp; nyitvatartás" data-en="Location &amp; hours">Helyszín &amp; nyitvatartás</p>
+        <h2 class="reveal" data-hu="Találj ránk a Várkerületen" data-en="Find us on Várkerület">Találj ránk a Várkerületen</h2>
       </div>
 
       <div class="location-grid">
-        <div class="location-info">
+        <div class="location-info reveal" data-reveal="left">
           <div class="info-block">
             <h3 data-hu="Cím" data-en="Address">Cím</h3>
             <p>Várkerület 83, 9400 Sopron</p>
@@ -280,12 +368,12 @@
           <div class="info-block order-links">
             <h3 data-hu="Házhozszállítás" data-en="Delivery">Házhozszállítás</h3>
             <div class="order-buttons">
-              <a class="btn btn-outline btn-small" href="https://wolt.com/en/hun/sopron/restaurant/henrys-sopron" target="_blank" rel="noopener">Wolt</a>
-              <a class="btn btn-outline btn-small" href="https://www.foodora.hu/restaurant/psi3/henrys-sopron" target="_blank" rel="noopener">Foodora</a>
+              <a class="btn btn-outline btn-small btn-magnetic" href="https://wolt.com/en/hun/sopron/restaurant/henrys-sopron" target="_blank" rel="noopener">Wolt</a>
+              <a class="btn btn-outline btn-small btn-magnetic" href="https://www.foodora.hu/restaurant/psi3/henrys-sopron" target="_blank" rel="noopener">Foodora</a>
             </div>
           </div>
         </div>
-        <div class="location-map">
+        <div class="location-map reveal" data-reveal="right">
           <iframe
             title="Henry's Sopron térkép"
             src="https://www.google.com/maps?q=Henry%27s+Sopron%2C+V%C3%A1rker%C3%BClet+83%2C+9400+Sopron&output=embed"
@@ -299,17 +387,17 @@
   <!-- CONTACT -->
   <section class="section" id="contact">
     <div class="wrap contact-inner">
-      <p class="eyebrow" data-hu="Kapcsolat" data-en="Contact">Kapcsolat</p>
-      <h2 data-hu="Gyere el, vagy kövess minket" data-en="Come visit, or follow along">Gyere el, vagy kövess minket</h2>
-      <p class="section-lead" data-hu="Asztalfoglalással kapcsolatban keress minket Facebookon vagy Instagramon — ott mindig gyorsan válaszolunk." data-en="For table reservations, reach us on Facebook or Instagram — we always reply quickly there.">
+      <p class="eyebrow reveal" data-hu="Kapcsolat" data-en="Contact">Kapcsolat</p>
+      <h2 class="reveal" data-hu="Gyere el, vagy kövess minket" data-en="Come visit, or follow along">Gyere el, vagy kövess minket</h2>
+      <p class="section-lead reveal" data-hu="Asztalfoglalással kapcsolatban keress minket Facebookon vagy Instagramon — ott mindig gyorsan válaszolunk." data-en="For table reservations, reach us on Facebook or Instagram — we always reply quickly there.">
         Asztalfoglalással kapcsolatban keress minket Facebookon vagy Instagramon — ott mindig gyorsan válaszolunk.
       </p>
-      <div class="social-links">
-        <a href="https://www.instagram.com/henrys_sopron/" target="_blank" rel="noopener" class="social-link">
+      <div class="social-links reveal">
+        <a href="https://www.instagram.com/henrys_sopron/" target="_blank" rel="noopener" class="social-link btn-magnetic">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg>
           Instagram
         </a>
-        <a href="https://www.facebook.com/people/Henrys-Sopron/61588536080640/" target="_blank" rel="noopener" class="social-link">
+        <a href="https://www.facebook.com/people/Henrys-Sopron/61588536080640/" target="_blank" rel="noopener" class="social-link btn-magnetic">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 9h3V6h-3c-2.2 0-4 1.8-4 4v2H7v3h3v6h3v-6h3l1-3h-4v-2c0-.6.4-1 1-1z"/></svg>
           Facebook
         </a>
@@ -336,9 +424,9 @@
   </div>
 </footer>
 
-<a href="#menu" class="fab" data-hu="Étlap" data-en="Menu">
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 6h16M4 12h16M4 18h10"/></svg>
-</a>
+<button class="fab btn-magnetic" id="backToTop" data-hu="Fel" data-en="Top" aria-label="Vissza a tetejére">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+</button>
 
 <!-- reusable SVG defs -->
 <svg width="0" height="0" style="position:absolute">
@@ -349,6 +437,9 @@
   </defs>
 </svg>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
 <script src="script.js"></script>
 </body>
 </html>
