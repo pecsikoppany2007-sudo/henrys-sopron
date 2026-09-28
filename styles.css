@@ -182,7 +182,14 @@ html.has-intro #heroShade { opacity: 0; }
 .card-name { margin: 0; font-size: 1.45rem; }
 .card-price { font-family: var(--cond); font-weight: 700; font-size: 1.25rem; color: var(--red-hot); white-space: nowrap; font-variant-numeric: tabular-nums; }
 .card-desc { margin: 0; font-size: .95rem; line-height: 1.5; }
-.card--noimg .card-body { justify-content: center; }
+.card-media--brand { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; background:
+  radial-gradient(circle at 20% 25%, rgba(255,255,255,.07) 0 2px, transparent 3px) 0 0 / 26px 26px,
+  radial-gradient(circle at 70% 75%, rgba(0,0,0,.12) 0 2px, transparent 3px) 0 0 / 26px 26px,
+  linear-gradient(135deg, var(--red) 0%, var(--red-deep) 100%); }
+.cm-word { font-family: var(--display); text-transform: uppercase; font-size: clamp(3rem, 6vw, 4.6rem); line-height: .9; color: #fff; letter-spacing: .01em; }
+.cm-sub { font-family: var(--cond); font-weight: 700; letter-spacing: .22em; text-transform: uppercase; font-size: .85rem; color: rgba(255,255,255,.85); }
+.card:hover .card-media--brand .cm-word { transform: scale(1.04); }
+.cm-word { transition: transform .8s var(--ease); }
 .menu-note { font-size: .9rem; color: var(--faint); margin-top: 26px; }
 
 /* ---------- beers ---------- */
