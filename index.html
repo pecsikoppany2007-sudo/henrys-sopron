@@ -13,22 +13,13 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="preload" as="image" href="img/hero-2400.webp" media="(min-width: 761px)">
-<link rel="preload" as="image" href="img/hero-mobile.webp" media="(max-width: 760px)">
-<link rel="stylesheet" href="styles.css?v=4">
-<script>document.documentElement.classList.add('preloading');</script>
+<link rel="preload" as="image" href="img/hero-poster.webp">
+<link rel="stylesheet" href="styles.css?v=5">
 </head>
 <body>
 
 <div class="grain" aria-hidden="true"></div>
 <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
-
-<div class="preloader" id="preloader" aria-hidden="true">
-  <div class="preloader-inner">
-    <img src="img/logo.webp" alt="" width="320" height="120">
-    <span class="preloader-bar"><span id="preloaderFill"></span></span>
-  </div>
-</div>
 
 <header class="site-header" id="top">
   <div class="wrap header-inner">
@@ -63,12 +54,26 @@
   <!-- HERO -->
   <section class="hero" id="heroIntro">
     <div class="hero-media" aria-hidden="true">
-      <picture>
-        <source media="(max-width: 760px)" srcset="img/hero-mobile.webp">
-        <source srcset="img/hero-1200.webp 1200w, img/hero-2400.webp 2400w" sizes="100vw">
-        <img id="heroImg" src="img/hero-2400.webp" alt="" width="2400" height="1036" fetchpriority="high">
-      </picture>
-      <div class="hero-shade"></div>
+      <video id="heroVideo" class="hero-video" autoplay muted loop playsinline preload="auto" poster="img/hero-poster.webp">
+        <source src="video/hero-720.mp4" type="video/mp4" media="(max-width: 760px)">
+        <source src="video/hero.mp4" type="video/mp4">
+      </video>
+      <div class="hero-shade" id="heroShade"></div>
+    </div>
+
+    <div class="intro" id="intro" aria-hidden="true">
+      <svg class="intro-svg" id="introSvg" width="100%" height="100%">
+        <defs>
+          <mask id="introMask" maskUnits="userSpaceOnUse">
+            <rect id="introMaskBg" x="0" y="0" width="100%" height="100%" fill="#fff"/>
+            <g id="introWord"><text id="introText" text-anchor="middle" fill="#000">HENRY'S</text></g>
+          </mask>
+        </defs>
+        <rect id="introCover" x="0" y="0" width="100%" height="100%" fill="#0e0c0b" mask="url(#introMask)"/>
+        <g id="introOutline"><text id="introOutlineText" text-anchor="middle" fill="none" stroke="rgba(246,241,237,.28)" stroke-width="1" vector-effect="non-scaling-stroke">HENRY'S</text></g>
+        <text id="introMeasure" text-anchor="middle" visibility="hidden">HENRY'S</text>
+      </svg>
+      <p class="intro-sub" id="introSub">Burger &amp; Beer · Sopron</p>
     </div>
 
     <div class="wrap hero-inner">
@@ -90,50 +95,7 @@
   </section>
 
   <!-- MARQUEE -->
-  <div class="marquee" aria-label="Henry's"><div class="marquee-track"><span data-hu="Vadkovászos vajas buci" data-en="Wild-sourdough buttered buns">Vadkovászos vajas buci</span><i aria-hidden="true">✦</i><span data-hu="150 g frissen darált marha" data-en="150 g freshly ground beef">150 g frissen darált marha</span><i aria-hidden="true">✦</i><span data-hu="15 csapolt sör" data-en="15 beers on tap">15 csapolt sör</span><i aria-hidden="true">✦</i><span data-hu="Várkerület 83, Sopron" data-en="Várkerület 83, Sopron">Várkerület 83, Sopron</span><i aria-hidden="true">✦</i><span data-hu="Házi szószok" data-en="House-made sauces">Házi szószok</span><i aria-hidden="true">✦</i><span data-hu="Csapolt sör elvitelre" data-en="Draught beer to go">Csapolt sör elvitelre</span><i aria-hidden="true">✦</i></div><div class="marquee-track" aria-hidden="true"><span data-hu="Vadkovászos vajas buci" data-en="Wild-sourdough buttered buns">Vadkovászos vajas buci</span><i aria-hidden="true">✦</i><span data-hu="150 g frissen darált marha" data-en="150 g freshly ground beef">150 g frissen darált marha</span><i aria-hidden="true">✦</i><span data-hu="15 csapolt sör" data-en="15 beers on tap">15 csapolt sör</span><i aria-hidden="true">✦</i><span data-hu="Várkerület 83, Sopron" data-en="Várkerület 83, Sopron">Várkerület 83, Sopron</span><i aria-hidden="true">✦</i><span data-hu="Házi szószok" data-en="House-made sauces">Házi szószok</span><i aria-hidden="true">✦</i><span data-hu="Csapolt sör elvitelre" data-en="Draught beer to go">Csapolt sör elvitelre</span><i aria-hidden="true">✦</i></div></div>
-
-  <!-- BURGER BUILD -->
-  <section class="burger-build" id="burgerBuild">
-    <div class="burger-build-stage">
-      <div class="stage-glow" aria-hidden="true"></div>
-      <div class="build-visual">
-        <svg class="burger-build-svg" viewBox="0 0 420 460" aria-hidden="true">
-          <defs>
-            <linearGradient id="gradTopBun" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#e2973a"/><stop offset="55%" stop-color="#c7771f"/><stop offset="100%" stop-color="#8e4d12"/></linearGradient>
-            <linearGradient id="gradBottomBun" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#c47a2c"/><stop offset="100%" stop-color="#8a5217"/></linearGradient>
-            <linearGradient id="gradPatty" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#6b3826"/><stop offset="100%" stop-color="#3a1c0e"/></linearGradient>
-            <linearGradient id="gradCheese" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#f3b62f"/><stop offset="100%" stop-color="#e09514"/></linearGradient>
-            <linearGradient id="gradLettuce" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#93b360"/><stop offset="100%" stop-color="#5f7d36"/></linearGradient>
-            <linearGradient id="gradTomato" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#d9412f"/><stop offset="100%" stop-color="#9c1f14"/></linearGradient>
-            <radialGradient id="gradPlate" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#2a1d1a"/><stop offset="100%" stop-color="#0e0c0b" stop-opacity="0"/></radialGradient>
-          </defs>
-          <ellipse cx="210" cy="400" rx="190" ry="26" fill="url(#gradPlate)"/>
-          <g id="ing-bottom-bun"><path d="M60 330 Q60 372 210 372 Q360 372 360 330 L360 300 L60 300 Z" fill="url(#gradBottomBun)"/><path d="M60 300 L360 300 L360 308 L60 308 Z" fill="#000" opacity="0.12"/></g>
-          <g id="ing-patty"><rect x="52" y="270" width="316" height="38" rx="15" fill="url(#gradPatty)"/><rect x="52" y="270" width="316" height="10" rx="5" fill="#7c4530" opacity="0.6"/></g>
-          <g id="ing-cheese"><path d="M48 268 L372 268 L344 240 L302 268 L258 238 L216 268 L174 238 L132 268 L90 240 Z" fill="url(#gradCheese)"/></g>
-          <g id="ing-lettuce"><path d="M55 236 Q90 210 125 236 Q158 208 192 236 Q225 206 258 236 Q291 208 324 236 Q357 210 365 236 L365 252 L55 252 Z" fill="url(#gradLettuce)"/></g>
-          <g id="ing-tomato"><rect x="70" y="218" width="280" height="22" rx="11" fill="url(#gradTomato)"/><circle cx="120" cy="229" r="4.5" fill="#f1dccb" opacity="0.5"/><circle cx="230" cy="229" r="4.5" fill="#f1dccb" opacity="0.5"/><circle cx="300" cy="229" r="4.5" fill="#f1dccb" opacity="0.5"/></g>
-          <g id="ing-top-bun"><path d="M78 218 Q60 118 210 100 Q360 118 342 218 Z" fill="url(#gradTopBun)"/><path d="M100 218 Q88 142 210 128 Q332 142 320 218 Z" fill="none" stroke="#8e4d12" stroke-width="3" opacity="0.45"/>
-            <g id="ing-sesame">
-              <ellipse cx="150" cy="152" rx="6.5" ry="9.5" fill="#f6ecdc" transform="rotate(-20 150 152)"/>
-              <ellipse cx="205" cy="128" rx="6.5" ry="9.5" fill="#f6ecdc" transform="rotate(10 205 128)"/>
-              <ellipse cx="258" cy="148" rx="6.5" ry="9.5" fill="#f6ecdc" transform="rotate(-8 258 148)"/>
-              <ellipse cx="178" cy="170" rx="6.5" ry="9.5" fill="#f6ecdc" transform="rotate(25 178 170)"/>
-              <ellipse cx="240" cy="178" rx="6.5" ry="9.5" fill="#f6ecdc" transform="rotate(-15 240 178)"/>
-              <ellipse cx="120" cy="185" rx="6.5" ry="9.5" fill="#f6ecdc" transform="rotate(12 120 185)"/>
-            </g>
-          </g>
-        </svg>
-        <img class="build-photo" id="buildPhoto" src="img/burger-cutout.webp" alt="Henry's cheeseburger" width="555" height="426" loading="lazy">
-      </div>
-      <div class="build-captions">
-        <p class="build-caption active" data-hu="Vadkovászos vajas buci." data-en="Buttered wild-sourdough bun.">Vadkovászos vajas buci.</p>
-        <p class="build-caption" data-hu="150 g frissen darált marha." data-en="150 g of freshly ground beef.">150 g frissen darált marha.</p>
-        <p class="build-caption" data-hu="Házi szósz, friss zöldség." data-en="House sauce, fresh veg.">Házi szósz, friss zöldség.</p>
-        <p class="build-caption build-caption-final" data-hu="Ez a Henry's." data-en="This is Henry's.">Ez a Henry's.</p>
-      </div>
-    </div>
-  </section>
+  <div class="marquee" aria-label="Henry's"><div class="marquee-track"><span data-hu="Burger &amp; Beer" data-en="Burger &amp; Beer">Burger &amp; Beer</span><i aria-hidden="true">✦</i><span data-hu="Várkerület 83, Sopron" data-en="Várkerület 83, Sopron">Várkerület 83, Sopron</span><i aria-hidden="true">✦</i><span data-hu="Minden nap 11:30-tól" data-en="Open daily from 11:30">Minden nap 11:30-tól</span><i aria-hidden="true">✦</i><span data-hu="Házi szószok" data-en="House-made sauces">Házi szószok</span><i aria-hidden="true">✦</i><span data-hu="Csapolt sör elvitelre" data-en="Draught beer to go">Csapolt sör elvitelre</span><i aria-hidden="true">✦</i><span data-hu="SZÉP-kártyát elfogadunk" data-en="SZÉP card welcome">SZÉP-kártyát elfogadunk</span><i aria-hidden="true">✦</i></div><div class="marquee-track" aria-hidden="true"><span data-hu="Burger &amp; Beer" data-en="Burger &amp; Beer">Burger &amp; Beer</span><i aria-hidden="true">✦</i><span data-hu="Várkerület 83, Sopron" data-en="Várkerület 83, Sopron">Várkerület 83, Sopron</span><i aria-hidden="true">✦</i><span data-hu="Minden nap 11:30-tól" data-en="Open daily from 11:30">Minden nap 11:30-tól</span><i aria-hidden="true">✦</i><span data-hu="Házi szószok" data-en="House-made sauces">Házi szószok</span><i aria-hidden="true">✦</i><span data-hu="Csapolt sör elvitelre" data-en="Draught beer to go">Csapolt sör elvitelre</span><i aria-hidden="true">✦</i><span data-hu="SZÉP-kártyát elfogadunk" data-en="SZÉP card welcome">SZÉP-kártyát elfogadunk</span><i aria-hidden="true">✦</i></div></div>
 
   <!-- FEATURED -->
   <section class="featured" id="featured">
@@ -144,7 +106,7 @@
       <div class="featured-copy">
         <p class="kicker reveal" data-hu="A ház új kedvence" data-en="The new house favourite">A ház új kedvence</p>
         <h2 class="featured-title reveal">Golden<br>Truffle</h2>
-        <p class="reveal" data-hu="Vadkovászos vajas buci, 150 g frissen darált marha, cheddar, lilahagymalekvár, pirított hagyma és szarvasgombás majonéz." data-en="Buttered wild-sourdough bun, 150 g freshly ground beef, cheddar, red onion jam, crispy fried onions and truffle mayo.">Vadkovászos vajas buci, 150 g frissen darált marha, cheddar, lilahagymalekvár, pirított hagyma és szarvasgombás majonéz.</p>
+        <p class="reveal" data-hu="Szarvasgomba, édes lilahagymalekvár, ropogós pirított hagyma és olvadt cheddar. A Henry's legújabb burgere, és egyben a legelegánsabb." data-en="Truffle, sweet red onion jam, crispy fried onions and melted cheddar. Henry's newest burger, and its most elegant.">Szarvasgomba, édes lilahagymalekvár, ropogós pirított hagyma és olvadt cheddar. A Henry's legújabb burgere, és egyben a legelegánsabb.</p>
         <div class="featured-buy reveal">
           <span class="featured-price">4&#8239;590&nbsp;Ft</span>
           <a class="btn btn-red btn-magnetic" href="https://wolt.com/en/hun/sopron/restaurant/henrys-sopron" target="_blank" rel="noopener" data-hu="Rendeld meg" data-en="Order it">Rendeld meg</a>
@@ -234,7 +196,7 @@
         <button class="chip" data-filter="dark" data-hu="Sötét" data-en="Dark">Sötét</button>
       </div>
 
-      <div class="beer-list" id="beerList">
+      <div class="beer-list collapsed" id="beerList">
 <article class="beer reveal-item" data-cat="light"><div class="beer-no">01</div><div class="beer-main"><h3 class="beer-name">Henry&#x27;s Pils</h3><p class="beer-style"><span data-hu="Pilsner" data-en="Pilsner">Pilsner</span> · Bohemia Regent</p><p class="beer-desc" data-hu="Klasszikus pilsner egyenesen Csehországból." data-en="A classic pilsner straight from Czechia.">Klasszikus pilsner egyenesen Csehországból.</p><div class="beer-meta"><span>ABV 4,6%</span><span>IBU 31</span></div></div><div class="beer-prices"><div class="bp"><span>2 dl</span><b>690 Ft</b></div><div class="bp"><span>4 dl</span><b>990 Ft</b></div><div class="bp"><span>1 l</span><b>1 980 Ft</b></div></div></article>
 <article class="beer reveal-item" data-cat="light"><div class="beer-no">02</div><div class="beer-main"><h3 class="beer-name">Augustiner</h3><p class="beer-style"><span data-hu="Lager" data-en="Lager">Lager</span> · Augustiner-Bräu München</p><p class="beer-desc" data-hu="Különösen lágy, pezsgő, hosszan érlelt, frissítő sör Németországból." data-en="Exceptionally soft, lively, long-lagered and refreshing, from Germany.">Különösen lágy, pezsgő, hosszan érlelt, frissítő sör Németországból.</p><div class="beer-meta"><span>ABV 5,2%</span><span>IBU 12</span></div></div><div class="beer-prices"><div class="bp"><span>2 dl</span><b>990 Ft</b></div><div class="bp"><span>4 dl</span><b>1 390 Ft</b></div><div class="bp"><span>1 l</span><b>2 990 Ft</b></div></div></article>
 <article class="beer reveal-item" data-cat="light"><div class="beer-no">03</div><div class="beer-main"><h3 class="beer-name">Herr Lager</h3><p class="beer-style"><span data-hu="Lager" data-en="Lager">Lager</span> · Horizont Sörfőzde</p><p class="beer-desc" data-hu="Klasszikus német lager, amit amerikai komlók friss lendülete tesz különlegessé." data-en="A classic German lager lifted by fresh American hops.">Klasszikus német lager, amit amerikai komlók friss lendülete tesz különlegessé.</p><div class="beer-meta"><span>ABV 4,5%</span><span>IBU 25</span></div></div><div class="beer-prices"><div class="bp"><span>2 dl</span><b>1 090 Ft</b></div><div class="bp"><span>4 dl</span><b>1 490 Ft</b></div><div class="bp"><span>1 l</span><b>2 990 Ft</b></div></div></article>
@@ -251,6 +213,7 @@
 <article class="beer reveal-item" data-cat="dark"><div class="beer-no">14</div><div class="beer-main"><h3 class="beer-name">Morning Joe</h3><p class="beer-style"><span data-hu="Kávés stout" data-en="Coffee stout">Kávés stout</span> · Horizont Sörfőzde</p><p class="beer-desc" data-hu="Egyedi pörkölésű kávétól markáns, zabpehelytől krémes, selymes stout." data-en="Bold from a custom-roast coffee, creamy and silky from oats.">Egyedi pörkölésű kávétól markáns, zabpehelytől krémes, selymes stout.</p><div class="beer-meta"><span>ABV 6%</span><span>IBU 35</span></div></div><div class="beer-prices"><div class="bp"><span>2 dl</span><b>1 390 Ft</b></div><div class="bp"><span>4 dl</span><b>1 890 Ft</b></div><div class="bp"><span>1 l</span><b>3 990 Ft</b></div></div></article>
 <article class="beer reveal-item" data-cat="dark"><div class="beer-no">15</div><div class="beer-main"><h3 class="beer-name">Keresztanya</h3><p class="beer-style"><span data-hu="Blend" data-en="Blend">Blend</span> · Horizont × Szent András</p><p class="beer-desc" data-hu="A Szent András meggyes sörének és a Horizont Morning Joe-jának keveréke." data-en="A blend of Szent András&#x27;s cherry beer and Horizont&#x27;s Morning Joe.">A Szent András meggyes sörének és a Horizont Morning Joe-jának keveréke.</p><div class="beer-meta"><span>ABV 6%</span><span>IBU –</span></div></div><div class="beer-prices"><div class="bp"><span>2 dl</span><b>–</b></div><div class="bp"><span>4 dl</span><b>1 790 Ft</b></div><div class="bp"><span>1 l</span><b>3 490 Ft</b></div></div></article>
       </div>
+      <button class="beer-more" id="beerMore" type="button" data-hu="Mind a 15 sör" data-en="Show all 15 beers">Mind a 15 sör</button>
 
       <div class="beers-extra">
         <div class="na-box reveal">
@@ -289,7 +252,7 @@
         <dl class="story-facts reveal-stagger">
           <div class="reveal-item"><dt>900</dt><dd data-hu="burger a nyitóhétvégén" data-en="burgers on opening weekend">burger a nyitóhétvégén</dd></div>
           <div class="reveal-item"><dt>150 g</dt><dd data-hu="frissen darált marha" data-en="freshly ground beef">frissen darált marha</dd></div>
-          <div class="reveal-item"><dt>15</dt><dd data-hu="csapolt sör" data-en="beers on tap">csapolt sör</dd></div>
+          <div class="reveal-item"><dt>2026</dt><dd data-hu="márciusban nyitottunk" data-en="opened in March">márciusban nyitottunk</dd></div>
         </dl>
       </div>
     </div>
@@ -363,6 +326,12 @@
   </div>
 </footer>
 
+<nav class="mobile-bar" id="mobileBar" aria-label="Gyors elérés">
+  <a href="#menu" data-hu="Étlap" data-en="Menu">Étlap</a>
+  <a class="mb-order" href="https://wolt.com/en/hun/sopron/restaurant/henrys-sopron" target="_blank" rel="noopener" data-hu="Rendelés" data-en="Order">Rendelés</a>
+  <a href="https://www.google.com/maps/search/?api=1&amp;query=Henry%27s+Sopron+V%C3%A1rker%C3%BClet+83" target="_blank" rel="noopener" data-hu="Útvonal" data-en="Directions">Útvonal</a>
+</nav>
+
 <button class="fab btn-magnetic" id="backToTop" aria-label="Vissza a tetejére">
   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
 </button>
@@ -370,6 +339,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
-<script src="script.js?v=4"></script>
+<script src="script.js?v=5"></script>
 </body>
 </html>

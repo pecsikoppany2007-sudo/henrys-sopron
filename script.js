@@ -104,6 +104,7 @@
   chips.forEach(function (chip) {
     chip.addEventListener("click", function () {
       var f = chip.getAttribute("data-filter");
+      var bl = document.getElementById("beerList"); if (bl && f !== "all") bl.classList.remove("collapsed");
       chips.forEach(function (c) { c.classList.toggle("active", c === chip); });
       var shown = [];
       beers.forEach(function (b) {
@@ -120,34 +121,139 @@
 
   function debounce(fn, w) { var t; return function () { clearTimeout(t); t = setTimeout(fn, w); }; }
 
-  /* ---------------- preloader ---------------- */
-  function initPreloader(done) {
-    var pre = document.getElementById("preloader"), fill = document.getElementById("preloaderFill"), finished = false;
-    function finish() {
-      if (finished) return; finished = true;
-      htmlEl.classList.remove("preloading");
-      if (pre) pre.style.display = "none";
-      done && done();
+  /* ---------------- intro: fly through HENRY'S ---------------- */
+  function initIntro() {
+    var hero = document.getElementById("heroIntro");
+    var svg = document.getElementById("introSvg");
+    var text = document.getElementById("introText");
+    var measure = document.getElementById("introMeasure");
+    var word = document.getElementById("introWord");
+    var cover = document.getElementById("introCover");
+    var sub = document.getElementById("introSub");
+    if (!hasGSAP || prefersReduced || !svg || !text || !measure) return;
+    htmlEl.classList.add("has-intro");
+
+    var origin = { x: 0, y: 0 }, bigScale = 90;
+    var outline = document.getElementById("introOutline"), outlineText = document.getElementById("introOutlineText");
+    var media = hero.querySelector(".hero-media");
+
+    // Find a point well inside a letter stroke, as close to the screen centre as
+    // possible, so the zoom "flies through" the letter instead of into black.
+    function findOrigin(W, H, fs, y) {
+      try {
+        var c = document.createElement("canvas"); c.width = W; c.height = H;
+        var g = c.getContext("2d");
+        g.font = fs + "px Anton, Impact, 'Arial Narrow', sans-serif";
+        g.textAlign = "center"; g.textBaseline = "alphabetic"; g.fillStyle = "#000";
+        g.fillText("HENRY'S", W / 2, y);
+        var d = g.getImageData(0, 0, W, H).data;
+        function on(x, yy) { if (x < 0 || yy < 0 || x >= W || yy >= H) return false; return d[(yy * W + x) * 4 + 3] > 200; }
+        var cx = W / 2, cy = H / 2;
+        // prefer a point deep inside a thick stroke; relax if nothing qualifies
+        var tries = [0.075, 0.05, 0.03];
+        for (var k = 0; k < tries.length; k++) {
+          var r = Math.max(3, Math.round(fs * tries[k])), rd = Math.round(r * 0.7), best = null, bestD = Infinity;
+          for (var yy = Math.round(y - fs * 0.7); yy < y - r; yy += 2) {
+            for (var xx = r; xx < W - r; xx += 2) {
+              if (!on(xx, yy)) continue;
+              if (!(on(xx - r, yy) && on(xx + r, yy) && on(xx, yy - r) && on(xx, yy + r) &&
+                    on(xx - rd, yy - rd) && on(xx + rd, yy - rd) && on(xx - rd, yy + rd) && on(xx + rd, yy + rd))) continue;
+              var dd = (xx - cx) * (xx - cx) + (yy - cy) * (yy - cy);
+              if (dd < bestD) { bestD = dd; best = { x: xx, y: yy, r: r }; }
+            }
+          }
+          if (best) return best;
+        }
+        return null;
+      } catch (e) { return null; }
     }
-    if (!hasGSAP || prefersReduced) { finish(); return; }
-    gsap.to(fill, { width: "100%", duration: .8, ease: "power2.inOut" });
-    gsap.to(pre, { opacity: 0, duration: .45, delay: .85, ease: "power2.out", onComplete: finish });
-    setTimeout(finish, 2200);
+
+    function layout() {
+      var W = hero.clientWidth, H = hero.clientHeight;
+      svg.setAttribute("viewBox", "0 0 " + W + " " + H);
+      var fs = Math.min(W * 0.26, H * 0.45);
+      measure.setAttribute("font-size", fs);
+      measure.setAttribute("x", W / 2);
+      var len = 0; try { len = measure.getComputedTextLength(); } catch (e) {}
+      if (len > 0) fs = Math.min(fs * (W * 0.86) / len, H * 0.5);
+      var y = H / 2 + fs * 0.36;
+      [text, measure, outlineText].forEach(function (t) { if (!t) return; t.setAttribute("font-size", fs); t.setAttribute("x", W / 2); t.setAttribute("y", y); });
+      var o = findOrigin(W, H, fs, y);
+      var rr = o ? o.r : fs * 0.03;
+      if (o) { origin.x = o.x; origin.y = o.y; } else { origin.x = W / 2; origin.y = H / 2; }
+      // big enough that the hole around the origin covers the farthest screen corner
+      bigScale = Math.ceil(1.15 * Math.sqrt(W * W + H * H) / rr);
+      applyScale();
+    }
+
+    // scale the letters around the chosen point (set by hand: GSAP's svgOrigin
+    // is unreliable for elements inside <mask>, which are never rendered)
+    var st = { s: 1 };
+    function applyScale() {
+      var t = "translate(" + origin.x + " " + origin.y + ") scale(" + st.s + ") translate(" + (-origin.x) + " " + (-origin.y) + ")";
+      word.setAttribute("transform", t);
+      if (outline) outline.setAttribute("transform", t);
+    }
+
+    function start() {
+      layout();
+      var isMobile = window.matchMedia("(max-width: 760px)").matches;
+      // desktop: slide the burger in under the letters, then settle back while we fly in
+      if (!isMobile) gsap.set(media, { scale: 1.3, xPercent: -13, transformOrigin: "50% 50%" });
+      gsap.fromTo([word, outline], { opacity: 0 }, { opacity: 1, duration: 1.4, ease: "power2.out" });
+      gsap.fromTo(st, { s: .9 }, { s: 1, duration: 1.6, ease: "power3.out", onUpdate: applyScale });
+      gsap.fromTo(sub, { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 1, delay: .7, ease: "power3.out" });
+
+      var tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: hero, start: "top top", end: isMobile ? "+=90%" : "+=120%",
+          scrub: .8, pin: true, anticipatePin: 1, invalidateOnRefresh: true
+        }
+      });
+      var intro = document.getElementById("intro");
+      tl.to(sub, { opacity: 0, y: -16, duration: .12 }, 0)
+        .to(outline, { opacity: 0, duration: .15 }, 0)
+        .fromTo(st, { s: 1 }, { s: function () { return bigScale; }, duration: .6, ease: "power2.in", immediateRender: false, onUpdate: applyScale }, 0)
+        .to(cover, { opacity: 0, duration: .1 }, .5)
+        .set(intro, { autoAlpha: 0 }, .61)
+        .to("#heroShade", { opacity: 1, duration: .22 }, .58)
+        .fromTo(".hero-copy", { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: .3, ease: "power2.out" }, .66)
+        .to({}, { duration: .04 });
+      if (!isMobile) tl.to(media, { scale: 1, xPercent: 0, duration: .8, ease: "power2.inOut" }, 0);
+      ScrollTrigger.addEventListener("refreshInit", layout);
+      ScrollTrigger.refresh();
+    }
+
+    var started = false;
+    function go() { if (!started) { started = true; start(); } }
+    if (document.fonts && document.fonts.ready) { document.fonts.ready.then(go); setTimeout(go, 1500); } else go();
+
+    var video = document.getElementById("heroVideo");
+    if (video && "IntersectionObserver" in window) {
+      new IntersectionObserver(function (en) {
+        en.forEach(function (x) { if (x.isIntersecting) { var p = video.play(); p && p.catch && p.catch(function () {}); } else video.pause(); });
+      }).observe(hero);
+    }
   }
 
-  /* ---------------- hero ---------------- */
-  function playHeroEntrance() {
+  function initParallax() {
     if (!hasGSAP || prefersReduced) return;
-    var tl = gsap.timeline({ defaults: { ease: "power3.out" } });
-    tl.fromTo("#heroImg", { scale: 1.14 }, { scale: 1, duration: 2.2, ease: "power2.out" }, 0)
-      .from(".reveal-word", { yPercent: 110, duration: .9, stagger: .09 }, .15)
-      .from(".hero .reveal-line", { opacity: 0, y: 20, duration: .7, stagger: .1 }, .55);
-  }
-  function initHeroParallax() {
-    if (!hasGSAP || prefersReduced) return;
-    gsap.to(".hero-media", { yPercent: 18, ease: "none", scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: true } });
-    gsap.to(".hero-copy", { opacity: 0, y: -60, ease: "none", scrollTrigger: { trigger: ".hero", start: "40% top", end: "bottom top", scrub: true } });
     gsap.fromTo(".beers-hero-img", { yPercent: -6 }, { yPercent: 6, ease: "none", scrollTrigger: { trigger: ".beers-hero", start: "top bottom", end: "bottom top", scrub: true } });
+  }
+
+  /* ---------------- mobile bar + beer "show all" ---------------- */
+  function initMobileBar() {
+    var bar = document.getElementById("mobileBar"); if (!bar) return;
+    function on() { bar.classList.toggle("visible", window.scrollY > window.innerHeight * 1.1); }
+    window.addEventListener("scroll", on, { passive: true }); on();
+  }
+  function initBeerMore() {
+    var btn = document.getElementById("beerMore"), list = document.getElementById("beerList");
+    if (!btn || !list) return;
+    btn.addEventListener("click", function () {
+      list.classList.remove("collapsed");
+      if (hasGSAP) { gsap.fromTo(list.querySelectorAll(".beer:nth-child(n+7)"), { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: .45, stagger: .04 }); ScrollTrigger.refresh(); }
+    });
   }
 
   /* ---------------- progress, header, spy, back to top ---------------- */
@@ -201,6 +307,7 @@
     if (!hasGSAP || prefersReduced) return;
     document.querySelectorAll(".reveal").forEach(function (el) {
       var dir = el.getAttribute("data-reveal") || "up", from = { opacity: 0 };
+      if (window.innerWidth <= 900) dir = "up"; // no sideways motion on narrow screens
       if (dir === "up") from.y = 40; if (dir === "left") from.x = -50; if (dir === "right") from.x = 50;
       gsap.set(el, from);
       gsap.to(el, { opacity: 1, x: 0, y: 0, duration: .9, ease: "power3.out", scrollTrigger: { trigger: el, start: "top 88%", once: true } });
@@ -240,57 +347,6 @@
     });
   }
 
-  /* ---------------- burger build ---------------- */
-  function initBurgerBuild() {
-    if (!hasGSAP) return;
-    var section = document.getElementById("burgerBuild"); if (!section) return;
-    var captions = document.querySelectorAll(".build-caption");
-    if (prefersReduced) {
-      captions.forEach(function (c, i) { c.classList.toggle("active", i === captions.length - 1); });
-      return;
-    }
-    ScrollTrigger.config({ ignoreMobileResize: true });
-    var mm = gsap.matchMedia();
-    mm.add({ isMobile: "(max-width: 760px)", isDesktop: "(min-width: 761px)" }, function (ctx) {
-      var ids = ["#ing-bottom-bun", "#ing-patty", "#ing-cheese", "#ing-lettuce", "#ing-tomato", "#ing-top-bun"];
-      gsap.set("#ing-bottom-bun", { y: 160, opacity: 0 });
-      gsap.set("#ing-patty", { x: -260, opacity: 0 });
-      gsap.set("#ing-cheese", { y: -120, opacity: 0 });
-      gsap.set("#ing-lettuce", { x: 260, opacity: 0 });
-      gsap.set("#ing-tomato", { y: -120, opacity: 0 });
-      gsap.set("#ing-top-bun", { y: -220, opacity: 0, rotate: -8 });
-      gsap.set("#ing-sesame > *", { scale: 0, opacity: 0, transformOrigin: "center" });
-      gsap.set(".stage-glow", { opacity: 0, scale: .85 });
-      gsap.set("#buildPhoto", { opacity: 0, scale: .92 });
-
-      var tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: section, start: "top top", end: ctx.conditions.isMobile ? "+=190%" : "+=240%",
-          scrub: .6, pin: ".burger-build-stage", anticipatePin: 1,
-          onUpdate: function (self) {
-            var idx = Math.min(captions.length - 1, Math.floor(self.progress * captions.length));
-            captions.forEach(function (c, i) { c.classList.toggle("active", i === idx); });
-          }
-        }
-      });
-      tl.to("#ing-bottom-bun", { y: 0, opacity: 1, duration: .13, ease: "power2.out" }, 0)
-        .to("#ing-patty", { x: 0, opacity: 1, duration: .13, ease: "power2.out" }, .1)
-        .to("#ing-cheese", { y: 0, opacity: 1, duration: .13, ease: "power2.out" }, .2)
-        .to("#ing-lettuce", { x: 0, opacity: 1, duration: .13, ease: "power2.out" }, .3)
-        .to("#ing-tomato", { y: 0, opacity: 1, duration: .13, ease: "power2.out" }, .4)
-        .to("#ing-top-bun", { y: 0, opacity: 1, rotate: 0, duration: .16, ease: "back.out(1.6)" }, .5)
-        .to("#ing-sesame > *", { scale: 1, opacity: 1, duration: .1, stagger: .015, ease: "back.out(2)" }, .63)
-        .to(".stage-glow", { opacity: 1, scale: 1.15, duration: .2 }, .7)
-        .to(".burger-build-svg", { opacity: 0, scale: .96, duration: .12 }, .78)
-        .to("#buildPhoto", { opacity: 1, scale: 1, duration: .14, ease: "power2.out" }, .78)
-        .to({}, { duration: .1 });
-
-      return function () {
-        gsap.set(ids.concat(["#ing-sesame > *", ".stage-glow", "#buildPhoto", ".burger-build-svg"]), { clearProps: "all" });
-      };
-    });
-  }
-
   /* ---------------- magnetic buttons ---------------- */
   function initMagnetic() {
     if (!hasGSAP || !hasFinePointer || prefersReduced) return;
@@ -306,16 +362,17 @@
     var saved = null; try { saved = localStorage.getItem(LANG_KEY); } catch (e) {}
     if (saved === "en") applyLang("en");
     initOpenStatus();
-    initPreloader(function () { playHeroEntrance(); if (hasGSAP) ScrollTrigger.refresh(); positionPillSoon(); });
     initLenis();
+    initIntro();
     initProgressBar();
     initHeaderState();
     initScrollSpy();
     initBackToTop();
+    initMobileBar();
+    initBeerMore();
     initReveals();
     initCountUp();
-    initBurgerBuild();
-    initHeroParallax();
+    initParallax();
     initMagnetic();
     positionPillSoon();
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { if (hasGSAP) ScrollTrigger.refresh(); positionPillSoon(); });
