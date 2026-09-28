@@ -367,9 +367,16 @@
 
     var captions = document.querySelectorAll(".build-caption");
 
+    // mobile browsers resize the viewport when the address bar hides/shows —
+    // ignore that so the pinned scene doesn't jump.
+    ScrollTrigger.config({ ignoreMobileResize: true });
+
+    // Same pinned, scroll-driven scene on every screen size; phones just get
+    // a slightly shorter scroll distance.
     var mm = gsap.matchMedia();
 
-    mm.add("(min-width: 761px)", function () {
+    mm.add({ isMobile: "(max-width: 760px)", isDesktop: "(min-width: 761px)" }, function (ctx) {
+      var isMobile = ctx.conditions.isMobile;
       var ids = ["#ing-bottom-bun", "#ing-patty", "#ing-cheese", "#ing-lettuce", "#ing-tomato", "#ing-top-bun"];
       gsap.set("#ing-bottom-bun", { y: 160, opacity: 0 });
       gsap.set("#ing-patty", { x: -260, opacity: 0 });
@@ -384,7 +391,7 @@
         scrollTrigger: {
           trigger: section,
           start: "top top",
-          end: "+=220%",
+          end: isMobile ? "+=170%" : "+=220%",
           scrub: 0.6,
           pin: ".burger-build-stage",
           anticipatePin: 1,
@@ -408,27 +415,6 @@
         gsap.set(ids, { clearProps: "all" });
         gsap.set("#ing-sesame > *", { clearProps: "all" });
         gsap.set(".stage-glow", { clearProps: "all" });
-      };
-    });
-
-    mm.add("(max-width: 760px)", function () {
-      var groups = ["#ing-bottom-bun", "#ing-patty", "#ing-cheese", "#ing-lettuce", "#ing-tomato", "#ing-top-bun"];
-      gsap.set(groups, { opacity: 0, y: 30 });
-      gsap.set("#ing-sesame > *", { scale: 0, opacity: 0, transformOrigin: "center" });
-      if (captions.length) captions[captions.length - 1].classList.add("active");
-
-      gsap.to(groups, {
-        opacity: 1, y: 0, duration: 0.6, stagger: 0.09, ease: "power3.out",
-        scrollTrigger: { trigger: section, start: "top 70%", once: true }
-      });
-      gsap.to("#ing-sesame > *", {
-        scale: 1, opacity: 1, duration: 0.3, stagger: 0.03, ease: "back.out(2)",
-        scrollTrigger: { trigger: section, start: "top 60%", once: true }
-      });
-
-      return function () {
-        gsap.set(groups, { clearProps: "all" });
-        gsap.set("#ing-sesame > *", { clearProps: "all" });
       };
     });
   }

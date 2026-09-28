@@ -324,30 +324,6 @@ html.preloading .preloader { display: flex; }
 }
 .hero-meta-item svg { color: var(--amber); flex-shrink: 0; }
 
-.scroll-cue {
-  position: absolute;
-  left: 50%;
-  bottom: 34px;
-  transform: translateX(-50%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  background: none;
-  border: none;
-  color: var(--text-faint);
-  font-size: 0.72rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  cursor: pointer;
-  z-index: 2;
-}
-.scroll-cue-dot { animation: cueBounce 1.8s ease-in-out infinite; }
-@keyframes cueBounce {
-  0%, 100% { transform: translateY(0); opacity: 1; }
-  50% { transform: translateY(9px); opacity: 0.4; }
-}
-
 /* ---------- burger build (pinned spectacle) ---------- */
 .burger-build {
   position: relative;
@@ -355,6 +331,7 @@ html.preloading .preloader { display: flex; }
 }
 .burger-build-stage {
   height: 100vh;
+  height: 100svh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -381,7 +358,8 @@ html.preloading .preloader { display: flex; }
 .build-captions {
   position: relative;
   z-index: 1;
-  height: 2.6em;
+  width: min(92vw, 640px);
+  height: 3.4em;
   margin-top: 18px;
   text-align: center;
 }
@@ -630,7 +608,6 @@ html.preloading .preloader { display: flex; }
   }
   .section { padding: 64px 0; }
   .hero { padding: 110px 0 70px; min-height: auto; }
-  .burger-build-stage { height: auto; padding: 60px 0; }
 }
 
 @media (max-width: 480px) {
@@ -642,7 +619,6 @@ html.preloading .preloader { display: flex; }
 /* ---------- reduced motion ---------- */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .scroll-cue-dot { animation: none; }
   #mugFoam { animation: none; }
   .preloader { display: none !important; }
   html.preloading, html.preloading body { overflow: auto; height: auto; }
