@@ -217,7 +217,7 @@
         .to(cover, { opacity: 0, duration: .1 }, .5)
         .set(intro, { autoAlpha: 0 }, .61)
         .to("#heroShade", { opacity: 1, duration: .22 }, .58)
-        .fromTo(".hero-copy", { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: .3, ease: "power2.out" }, .66)
+        .fromTo(".hero-copy", { autoAlpha: 0, y: 50 }, { autoAlpha: 1, y: 0, duration: .3, ease: "power2.out" }, .66)
         .to({}, { duration: .04 });
       if (!isMobile) tl.to(media, { scale: 1, xPercent: 0, duration: .8, ease: "power2.inOut" }, 0);
       ScrollTrigger.addEventListener("refreshInit", layout);
@@ -234,6 +234,10 @@
       // (never the native play button) and retry on the visitor's first touch.
       video.muted = true; video.defaultMuted = true; video.playsInline = true;
       var blocked = false;
+      var markPlaying = function () { if (!video.paused && video.currentTime > 0) video.classList.add("is-playing"); };
+      video.addEventListener("playing", function () { video.classList.add("is-playing"); });
+      video.addEventListener("timeupdate", markPlaying);
+      markPlaying();
       function tryPlay() {
         var p = video.play();
         if (p && p.then) p.then(function () { blocked = false; }).catch(function () { blocked = true; armRetry(); });
