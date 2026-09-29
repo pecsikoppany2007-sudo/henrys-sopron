@@ -229,10 +229,31 @@
     if (document.fonts && document.fonts.ready) { document.fonts.ready.then(go); setTimeout(go, 1500); } else go();
 
     var video = document.getElementById("heroVideo");
-    if (video && "IntersectionObserver" in window) {
-      new IntersectionObserver(function (en) {
-        en.forEach(function (x) { if (x.isIntersecting) { var p = video.play(); p && p.catch && p.catch(function () {}); } else video.pause(); });
-      }).observe(hero);
+    if (video) {
+      // iOS (esp. Low Power Mode) may refuse autoplay: then keep the poster
+      // (never the native play button) and retry on the visitor's first touch.
+      video.muted = true; video.defaultMuted = true; video.playsInline = true;
+      var blocked = false;
+      function tryPlay() {
+        var p = video.play();
+        if (p && p.then) p.then(function () { blocked = false; }).catch(function () { blocked = true; armRetry(); });
+      }
+      var armed = false;
+      function armRetry() {
+        if (armed) return; armed = true;
+        var retry = function () {
+          ["touchend", "click", "keydown"].forEach(function (ev) { document.removeEventListener(ev, retry, true); });
+          armed = false; tryPlay();
+        };
+        ["touchend", "click", "keydown"].forEach(function (ev) { document.addEventListener(ev, retry, { capture: true, passive: true }); });
+      }
+      tryPlay();
+      if ("IntersectionObserver" in window) {
+        new IntersectionObserver(function (en) {
+          en.forEach(function (x) { if (x.isIntersecting) tryPlay(); else if (!blocked) video.pause(); });
+        }).observe(hero);
+      }
+      document.addEventListener("visibilitychange", function () { if (!document.hidden) tryPlay(); });
     }
   }
 
